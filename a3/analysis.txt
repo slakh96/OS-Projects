@@ -1,0 +1,69 @@
+
+Instructions on how to run our Python program: 
+
+	The file referenceTracer.py contains a simple Python program which takes a trace file and parses it to display useful information. 
+	At the bottom of the file (around line 77), you will see a variable called "reference_file_path". This variable stores the path of the reference file. Simply change this 
+	path to be the path of whatever file you wish to run. Then, simply compile and execute the program. 
+
+
+===================================================================================================================================================================================
+File: addr-simpleloop.ref 
+
+Number of Instruction Pages: 7 
+Number of Data Pages: 2510 
+
+Counts:
+  Instructions 120406
+  Loads        50090
+  Stores       10063
+  Modifies     10006
+
+
+Addresses accessed frequently: 
+0x05017000    (accessed 28 times)
+0x1fff000000  (accessed 60100 times)
+0x00108000    (accessed 120026 times) 
+
+When running simpleloop with different memsizes (50 and 100), we noticed that the address 0x1fff000000 is accessed a very high number of times (around 60,000 times). After examining the simpleloop.ref file, we believe that this may be because this address is storing a variable that is accessed inside a loop (such as a counter or the loop condition, which is checked many times). Since this address is of type “S” - suggesting a “Store” operation - this may mean that this address stores the loop counter, which is getting saved/stored on each iteration. 
+===================================================================================================================================================================================
+
+===================================================================================================================================================================================
+File: addr-matmul.ref 
+
+Number of Instruction Pages: 31 
+Number of Data pages: 961 
+
+Counts:
+  Instructions 47473963
+  Loads        21491394
+  Stores       1180752
+  Modifies     1060125
+  
+Addresses accessed frequently: 
+0x1fff000000 (accessed 10301223 times) 
+0x0030a000   (accessed 9040220 times) 
+0x05017000   (accessed 200101 times)
+
+When running matmul, we noticed that many addresses (such as 0x0514e000 and 0x0524c000)  were accessed around 3232 times and 6432 times. Although the addresses were different, the number of times they were accessed appeared to remain fairly consistent. We believe this may be due to the matrix elements that are stored in different addresses (i.e. different elements of the 2D Array) but are accessed a consistent number of times due to the matrix multiplication algorithm (which follows a “each element with each other element in a column” approach). 
+===================================================================================================================================================================================
+
+===================================================================================================================================================================================
+File: addr-blocked.ref 
+
+Number of Instruction Pages: 32 
+Number of Data Pages: 961 
+
+Counts:
+  Instructions 51791748
+  Loads        21578983
+  Stores       1283021
+  Modifies     1091709
+  
+
+Addresses accessed frequently: 
+0x1fff000000 (accessed 14408843 times) 
+0x0501c000   (accessed 40009 times) 
+
+
+When running the blocked.ref file, we noticed a similar situation - many addresses were being accessed 3232 and 6656 times. However, we noticed that blocked.ref gave us a more consistent result since various addresses that were accessed many times in matmul.ref were not accessed in blocked.ref - which signifies that blocked.ref is slightly more memory aware. 
+===================================================================================================================================================================================
